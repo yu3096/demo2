@@ -1,0 +1,30 @@
+
+spring:
+  datasource:
+    hikari:
+      #driver-class-name: "com.mysql.cj.jdbc.Driver"
+      driver-class-name: "net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
+      jdbc-url: "jdbc:log4jdbc:mysql://110.11.178.205:11906/ysm?serverTimezone=Asia/Seoul"
+      url: "jdbc:log4jdbc:mysql://110.11.178.205:11906/ysm?serverTimezone=Asia/Seoul"
+      username: "ysm"
+      password: "ysm0119!"
+  security:
+    user:
+      name: admin
+      password: 1111
+
+
+#  messages:
+#    basename: i18n/exceptions
+#    encoding: utf-8
+
+logging:
+  level:
+    root: debug
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+    return-instance-for-empty-row: true
+

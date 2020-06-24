@@ -1,0 +1,53 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="loginMapper">
+  <select id="selectLoginInfoByLoginId" parameterType="java.lang.String" resultType="com.spring.demo2.common.login.dto.LoginUserPrincipal">
+    SELECT
+       LOGIN_INFO_SEQ
+      ,LOGIN_ID
+      ,LOGIN_PW
+      ,ENABLED
+      ,CREDENTIALS_NON_EXPIRED
+      ,ACCOUNT_NON_LOCKED
+      ,ACCOUNT_NON_EXPIRED
+      ,NULL AS AUTHORITIES
+      ,REG_SEQ
+      ,REG_DTTM
+      ,CHG_SEQ
+      ,CHG_DTTM
+    FROM TB_LOGIN_INFO
+    WHERE LOGIN_ID = #{loginId}
+  </select>
+
+  <select id="selectRoleByLoginInfoSeq" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT
+      ROLES_CD
+    FROM TB_LOGIN_ROLE_MAP
+    WHERE LOGIN_INFO_SEQ = #{loginInfoSeq}
+  </select>
+
+  <insert id="insertLoginHst" parameterType="com.spring.demo2.common.login.dto.LoginHst">
+    INSERT INTO TB_LOGIN_HST(
+       LOGIN_HST_SEQ
+      ,LOGIN_INFO_SEQ
+      ,LOGIN_DTTM
+      ,LOGIN_IP
+      ,REG_SEQ
+      ,REG_DTTM
+      ,CHG_SEQ
+      ,CHG_DTTM
+    )
+    VALUES(
+       null
+      ,#{loginInfoSeq}
+      ,current_timestamp
+      ,#{loginIp}
+      ,#{regSeq}
+      ,current_timestamp
+      ,#{chgSeq}
+      ,current_timestamp
+    )
+  </insert>
+</mapper>
