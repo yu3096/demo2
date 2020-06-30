@@ -9,11 +9,25 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@Builder
 @ToString
 public class LoginHst extends DBInformation {
   private String loginHstSeq;
   private String loginInfoSeq;
   private Date loginDttm;
   private String loginIp;
+  private String accessToken;
+  private String refreshToken;
+
+  @Builder
+  public LoginHst(String regSeq, Date regDttm, String chgSeq, Date chgDttm,
+      String loginHstSeq, String loginInfoSeq, Date loginDttm, String loginIp,
+      String accessToken, String refreshToken) {
+    super(regSeq, regDttm, chgSeq, chgDttm);
+    this.loginHstSeq = loginHstSeq;
+    this.loginInfoSeq = loginInfoSeq;
+    this.loginDttm = loginDttm;
+    this.loginIp = loginIp;
+    this.accessToken = accessToken;
+    this.refreshToken = refreshToken;
+  }
 }

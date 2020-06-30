@@ -3,6 +3,7 @@ package com.spring.demo2.common.login.service;
 import com.spring.demo2.common.login.dao.LoginDao;
 import com.spring.demo2.common.login.dto.LoginHst;
 import com.spring.demo2.common.login.dto.LoginUserPrincipal;
+import com.spring.demo2.common.login.dto.TokenDto;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService implements UserDetailsService {
-
   @Autowired private LoginDao loginDao;
 
   @Override
@@ -25,5 +25,9 @@ public class LoginService implements UserDetailsService {
 
   public int insertLoginHst(LoginHst userLoginHst) {
     return loginDao.insertLoginHst(userLoginHst);
+  }
+
+  public int insertTokenInfo(TokenDto tokenDto){
+    return loginDao.insertTokenInfo(tokenDto);
   }
 }

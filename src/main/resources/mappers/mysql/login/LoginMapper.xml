@@ -8,15 +8,13 @@
        LOGIN_INFO_SEQ
       ,LOGIN_ID
       ,LOGIN_PW
+      ,ORG_TYP_NM
+      ,LOGIN_NM
       ,ENABLED
       ,CREDENTIALS_NON_EXPIRED
       ,ACCOUNT_NON_LOCKED
       ,ACCOUNT_NON_EXPIRED
       ,NULL AS AUTHORITIES
-      ,REG_SEQ
-      ,REG_DTTM
-      ,CHG_SEQ
-      ,CHG_DTTM
     FROM TB_LOGIN_INFO
     WHERE LOGIN_ID = #{loginId}
   </select>
@@ -44,6 +42,27 @@
       ,#{loginInfoSeq}
       ,current_timestamp
       ,#{loginIp}
+      ,#{regSeq}
+      ,current_timestamp
+      ,#{chgSeq}
+      ,current_timestamp
+    )
+  </insert>
+
+  <insert id="insertTokenInfo" parameterType="com.spring.demo2.common.login.dto.TokenDto">
+    INSERT INTO TB_TOKEN_INFO(
+       REFRESH_TOKEN
+      ,REFRESH_TOKEN_EXPIRED_DTTM
+      ,ACCESS_TOKEN
+      ,REG_SEQ
+      ,REG_DTTM
+      ,CHG_SEQ
+      ,CHG_DTTM
+    )
+    VALUES(
+       #{refreshToken}
+      ,#{refreshTokenExpiredDttm}
+      ,#{accessToken}
       ,#{regSeq}
       ,current_timestamp
       ,#{chgSeq}

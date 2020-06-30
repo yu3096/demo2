@@ -5,7 +5,9 @@ import com.spring.demo2.common.login.dto.LoginHst;
 import com.spring.demo2.common.login.service.LoginService;
 import com.spring.demo2.common.utils.RequestContextHolder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -18,7 +20,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -67,23 +68,11 @@ public class AuthenticationProvider implements
       throw new CredentialsExpiredException("User credentials have expired");
     }
 
-    LoginHst userLoginHst = LoginHst.builder()
-        .loginInfoSeq(loadedUser.getLoginInfoSeq())
-        .loginIp(RequestContextHolder.getRequest().getRemoteAddr())
-        .build();
-
-    userLoginHst.setRegSeq(loadedUser.getLoginInfoSeq());
-    userLoginHst.setChgSeq(loadedUser.getLoginInfoSeq());
-
-    loginService.insertLoginHst(userLoginHst);
-
-    List<GrantedAuthority> listAuthorities = new ArrayList<>();
+    Set<GrantedAuthority> listAuthorities = new HashSet<>();
 
     for( String auth : authorities ){
       listAuthorities.add(new SimpleGrantedAuthority(auth));
     }
-
-
 
     UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(loadedUser,
         userPw, listAuthorities);

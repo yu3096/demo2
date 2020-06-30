@@ -2,6 +2,7 @@ package com.spring.demo2.common.login.dto;
 
 import com.spring.demo2.common.dto.DBInformation;
 import java.util.Collection;
+import java.util.Date;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,19 +10,22 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Builder
 @ToString
 @Getter
 @Setter
-public class LoginUserPrincipal extends DBInformation implements UserDetails {
+@Builder
+public class LoginUserPrincipal implements UserDetails {
   private String loginInfoSeq;
   private String loginId;
   private String loginPw;
 
+  private String orgTypNm;
+  private String loginNm;
+
+  private boolean enabled;
   private boolean accountNonExpired;
   private boolean accountNonLocked;
   private boolean credentialsNonExpired;
-  private boolean enabled;
 
   private Collection<? extends GrantedAuthority> authorities;
 

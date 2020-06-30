@@ -1,5 +1,6 @@
 package com.spring.demo2.config.spring.loginConfig;
 
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.StringUtils;
 
@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       }
 
       userId = userId.trim();
-      UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(userId, userPw);
+      UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(userId, userPw, new ArrayList<>());
 
       setDetails(request, authRequest);
       return this.getAuthenticationManager().authenticate(authRequest);

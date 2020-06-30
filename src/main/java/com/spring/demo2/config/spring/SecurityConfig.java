@@ -1,21 +1,26 @@
 package com.spring.demo2.config.spring;
 
+import com.spring.demo2.common.utils.RequestContextHolder;
 import com.spring.demo2.config.spring.loginConfig.AuthenticationProvider;
 import com.spring.demo2.config.spring.loginConfig.JwtAuthenticationFilter;
 import com.spring.demo2.config.spring.loginConfig.JwtAuthorizationFilter;
 import com.spring.demo2.config.spring.loginConfig.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.session.web.http.HeaderHttpSessionStrategy;
+import org.springframework.session.web.http.HttpSessionStrategy;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(
      securedEnabled = true
     ,jsr250Enabled = true
@@ -78,34 +83,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .headers().frameOptions().disable()
         .and()
           .authorizeRequests()
+            .antMatchers(HttpMethod.OPTIONS).permitAll()
             .antMatchers("/login*/**", "/logout/**").permitAll()
+            //.antMatchers(HttpMethod.GET, "/token").permitAll()
             .anyRequest().hasRole("ADMIN")
         .and()
+          .formLogin().disable()
           .logout().logoutUrl("/logout")
         .and()
-        /*
-        .formLogin()
-          .loginPage("/loginPage")
-          .usernameParameter("userId")
-          .passwordParameter("userPw")
-        .and()
-         */
-        /*
         .sessionManagement()
           .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-         */
           .addFilter(jwtAuthenticationFilter())
           .addFilter(jwtAuthorizationFilter())
     ;
   }
 
   @Bean
-  public AuthenticationSuccessHandler authenticationSuccessHandler() {
-    SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
-    successHandler.setDefaultTargetUrl("/index");
-    return successHandler;
+  public HttpSessionStrategy httpSessionStrategy(){
+    return new HeaderHttpSessionStrategy();
   }
 
-
+  @Bean
+  public AuthenticationSuccessHandler authenticationSuccessHandler() {
+    SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+    successHandler.setDefaultTargetUrl("/token");
+    return successHandler;
+  }
 }

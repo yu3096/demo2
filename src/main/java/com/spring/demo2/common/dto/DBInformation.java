@@ -13,4 +13,16 @@ public class DBInformation {
   private Date regDttm;
   private String chgSeq;
   private Date chgDttm;
+
+  public DBInformation(String regSeq, Date regDttm, String chgSeq, Date chgDttm) {
+    this.regSeq = regSeq;
+    this.regDttm = regDttm;
+    this.chgSeq = chgSeq;
+    this.chgDttm = chgDttm;
+  }
+
+  public DBInformation(String regSeq, String chgSeq) {
+    this.regSeq = regSeq;
+    this.chgSeq = chgSeq;
+  }
 }
